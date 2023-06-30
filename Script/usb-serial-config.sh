@@ -35,6 +35,11 @@ delete_existing_rule
 # Create udev rule
 echo "SUBSYSTEM==\"tty\", ATTRS{idVendor}==\"$VID\", ATTRS{idProduct}==\"$PID\", SYMLINK+=\"$DESIRED_NAME\"" | sudo tee "$RULE_FILE" >/dev/null
 
+# Set group ownership and permissions for the USB device
+DEVICE_FILE="/dev/$DESIRED_NAME"
+sudo chown root:usbusers "$DEVICE_FILE"
+sudo chmod g+rw "$DEVICE_FILE"
+
 # Reload udev rules
 sudo udevadm control --reload-rules
 
